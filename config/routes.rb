@@ -3,4 +3,5 @@ Rails.application.routes.draw do
   root to: 'top#index'
   post 'books' => 'books#create'  
   get 'books' => 'books#index'
+  get 'books/:id' => 'books#show', as: 'book_params'
 end
