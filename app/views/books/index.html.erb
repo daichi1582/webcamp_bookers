@@ -13,9 +13,9 @@
       <tr>
         <td><%= book.title %></td>
         <td><%= book.body %></td>
-        <td><%= link_to 'Show', "/books/#{book.id}", method: :get %></td>
-        <td><%= link_to 'Edit', "/books/#{book.id}/edit" %></td>
-        <td><%= link_to "Destroy", "/books/#{book.id}", method: :delete, "data-confirm" => "Are you sure?" %></td>
+        <td><%= link_to 'Show', book_path(book) %></td>
+        <td><%= link_to 'Edit', edit_book_path(book) %></td>
+        <td><%= link_to "Destroy", book_path(book), method: :delete, "data-confirm" => "Are you sure?" %></td>
       </tr>
     <% end %>
   </tbody>
@@ -23,11 +23,19 @@
 
 <h1>New book</h1>
 
-<%= form_with model: @book, url:'/books', local:true do |f| %>
+<%= form_with model:@book, url:'/books', local:true do |f| %>
+  <% if @book.errors.any? %>
+    <h2 class="warning"><%= pluralize(@book.errors.count, "error") %> prohibited this product from being saved:</h2>
+    <ul class="warning">
+      <% @book.errors.full_messages.each do |massage| %>
+      <li><%= massage %></li>
+      <% end %>
+    </ul>
+  <% end %>
   <h4>Title</h4>
   <%= f.text_field :title %>
   <h4>Body</h4>
   <%= f.text_area :body %>
-  <%= f.submit '投稿' %>
+  <%= f.submit 'Create Book' %>
 
 <% end %>

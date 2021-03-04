@@ -4,14 +4,15 @@ class BooksController < ApplicationController
     @book = Book.new
   end
 
-  def create
-    # １. データを新規登録するためのインスタンス作成
-    book = Book.new(book_params)
-    # ２. データをデータベースに保存するためのsaveメソッド実行
-    book.save
-    # ３. トップ画面へリダイレクト
-    redirect_to '/books'
+def create
+  @book = Book.new(book_params)
+  if @book.save
+    redirect_to ("/books/#{@book.id}"), notice: 'Book was successfully created.'
+  else
+    @books = Book.all
+    render 'index'
   end
+end
 
   def show
     @book = Book.find(params[:id])
@@ -22,9 +23,12 @@ class BooksController < ApplicationController
   end
 
   def update
-    book = Book.find(params[:id])
-    book.update(book_params)
-    redirect_to "/books/#{book.id}"
+    @book = Book.find(params[:id])
+    if @book.update(book_params)
+      redirect_to ("/books/#{@book.id}"), notice: 'Book was successfully updated.'
+    else
+      render 'edit'
+    end
   end
 
   def destroy
